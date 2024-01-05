@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <title>Van Cone | API</title>
+      <link rel="stylesheet" href="/style.css" />
+    </head>
+    <body>
+      <div class="container">
+        <div class="content">
+          <h1 id="van-cone--api-reference">Van Cone | API Reference</h1>
+          <p>See
+            <a href="../README.md">README.md</a>for installation and overview.</p>
+          <h2 id="examples">Examples</h2>
+          <p>See the
+            <a href="../examples/">examples</a>folder for full working examples of a
+            <a href="../examples/hello-world/">hello world</a>(
+            <a href="https://codesandbox.io/p/devbox/van-cone-hello-world-yxpxhy">preview</a>), and more complex
+            <a href="../examples/spa-app/">application</a>(
+            <a href="https://codesandbox.io/p/devbox/github/vanjs-org/van/tree/main/addons/van_cone/examples/spa-app">preview</a>) with several pages.</p>
+          <h2 id="components">Components</h2>
+          <p>See the
+            <a href="/docs/COMPONENT_GUIDE.html">component guide</a>for an explanation on components in Van Cone.</p>
+          <h2 id="navigation">Navigation</h2>
+          <h3 id="component-navigation">component navigation</h3>
+          <ul>
+            <li>
+              <a href="#linkprops-children">
+                <code>link</code>
+              </a>
+            </li>
+          </ul>
+          <h3 id="programmatic-navigation-functions">programmatic navigation functions</h3>
+          <ul>
+            <li>
+              <a href="#navigateroutename-options">
+                <code>navigate</code>
+              </a>
+            </li>
+            <li>
+              <a href="#pushhistoryroutename-options">
+                <code>pushHistory</code>
+              </a>
+            </li>
+          </ul>
+          <h1 id="api-reference">API Reference</h1>
+          <p>🚨
+            <strong>Van Cone is in Beta - API changes are possible</strong>🚨</p>
+          <h3 id="createconerouterelement-routes-defaultnavstate">
+            <code>createCone(routerElement, routes, defaultNavState)</code>
+          </h3>
+          <p>The only exported function from the module, used to create an application.</p>
+          <p>
+            <strong>arguments</strong>
+          </p>
+          <ul>
+            <li>
+              <p>
+                <code>routerElement</code>- (required) the root DOM element element that holds the app (element defined by active route)</p>
+            </li>
+            <li>
+              <p>
+                <code>routes</code>- (required) an array of
+                <a href="#routes">
+                  <code>routes</code>
+                </a>
+              </p>
+            </li>
+            <li>
+              <p>
+                <code>defaultNavState</code>- (optional) the default navigation state, any type allowed by
+                <a href="https://developer.mozilla.org/en-US/docs/Web/API/History/pushState">
+                  <code>history.pushState</code>
+                </a>
+              </p>
+            </li>
+            <li>
+              <p>
+                <a href="#routerconfig">
+                  <code>routerConfig</code>
+                </a>= (optional) - configure
+                <code>prefix</code>to prepend to each url, or
+                <code>backendPrefix</code>if different than frontend.</p>
+            </li>
+          </ul>
+          <p>
+            <strong>return</strong>
+          </p>
+          <p>An object with the following items is returned:</p>
+          <ul>
+            <li>
+              <p>
+                <a href="#linkprops-children">
+                  <code>link</code>
+                </a>- a VanJS link component that navigates to named routes and includes active link css styling</p>
+            </li>
+            <li>
+              <p>
+                <a href="#navigateroutename-options">
+                  <code>navigate</code>
+                </a>- a function for programmatic navigation</p>
+            </li>
+            <li>
+              <p>
+                <a href="#iscurrentpagepagename">
+                  <code>isCurrentPage</code>
+                </a>- a function to determine if a page is currently active</p>
+            </li>
+            <li>
+              <p>
+                <a href="#navurlroutename-params---query">
+                  <code>navUrl</code>
+                </a>- a function to generate a url string given a route name and url and query params.</p>
+            </li>
+            <li>
+              <p>
+                <a href="#backendurlroutename-params---query">
+                  <code>backendUrl</code>
+                </a>- a function to generate a url string given a route name and url and query params.</p>
+            </li>
+            <li>
+              <p>
+                <code>routerElement</code>- the same element passed to this function</p>
+            </li>
+            <li>
+              <p>
+                <code>currentPage</code>- a
+                <code>van.state</code>object representing the
+                <code>name</code>value of the active route</p>
+            </li>
+            <li>
+              <p>
+                <code>navState</code>- a
+                <code>van.state</code>object representing the current
+                <a href="https://developer.mozilla.org/en-US/docs/Web/API/History/state">
+                  <code>window.history.state</code>
+                </a>
+              </p>
+            </li>
+            <li>
+              <p>
+                <code>getNavState</code>- a function that returns
+                <code>navState.val</code>
+              </p>
+            </li>
+            <li>
+              <p>
+                <code>setNavState</code>- change
+                <a href="https://developer.mozilla.org/en-US/docs/Web/API/History/state">
+                  <code>window.history.state</code>
+                </a>, any type allowed by
+                <a href="https://developer.mozilla.org/en-US/docs/Web/API/History/pushState">
+                  <code>history.pushState</code>
+                </a>
+              </p>
+            </li>
+          </ul>
+          <h2 id="routes">
+            <code>routes</code>
+          </h2>
+          <p>A list of objects defining each route. Each route object has the following properties:</p>
+          <p>
+            <strong>
+              <code>path</code>
+            </strong>(required) a string defining the route&#39;s path. To create a URL param prefix it with a colon, use .* for wild cards (404 not found)</p>
+          <p>
+            <strong>
+              <code>name</code>
+            </strong>(required) a string representing the name of the route, used for programmatic navigation</p>
+          <p>
+            <strong>
+              <code>callable</code>
+            </strong>(required) a callback that either returns an element to put on the DOM or another callable that returns this element (for more complex apps requiring imports). The callback is passed 2 arguments, an object representing the params parsed from the URL and another representing parsed query string params.</p>
+          <p>
+            <strong>
+              <code>backend</code>
+            </strong>(optional) provide this value when data is fetched from a different endpoint on the backend than on the frontend. See
+            <a href="#backendurlroutename-params---query">
+              <code>backendUrl</code>
+            </a>for more.</p>
+          <p>
+            <strong>
+              <code>title</code>
+            </strong>(optional) if provided the title of the page will change to this when this route is active.</p>
+          <h3 id="example">example</h3>
+          <p>Below is a basic example showing routes with url and query params and how to consume them in a component.</p>
+          <p>See the
+            <a href="/docs/COMPONENT_GUIDE.html">component guide</a>for more examples.</p>
+          <pre>
+            <code class="language-javascript">const userPage = (params) =&gt; div(&#39;User Page&#39;, p(&#39;userId: &#39; + params.userId)) const userListPage = (params, query) =&gt; div(&#39;User List&#39;, p(&#39;sort by: &#39; + query.sort)) const routes = [ { path: &quot;/user/:userId&quot;, name: &quot;user&quot;, title: &quot;VanJS Example | User&quot;, callable: async () =&gt; import(&#39;./app/pages/user&#39;) }, { path: &quot;/users&quot;, name: &quot;users&quot;, title: &quot;VanJS Example | User List&quot;, callable: async () =&gt; import(&#39;./app/pages/userList&#39;) } ]</code>
+          </pre>
+          <h2 id="routerconfig">
+            <code>routerConfig</code>
+          </h2>
+          <p>An object used to configure the router, it has two optional keys
+            <code>prefix</code>and
+            <code>backendPrefix</code>. If
+            <code>routerConfig</code>is not provided or either key is not provided they will default to an empty string.</p>
+          <p>
+            <code>prefix</code>will be prepended to front end URLs, the ones shown in the browser and matched when navigating to different pages. See
+            <a href="#navurlroutename-params---query">
+              <code>navUrl</code>
+            </a>for more.</p>
+          <p>The
+            <code>backendPrefix</code>is useful for when the backend is at a different host or has a different prefix than the front end. It is only used as a utility to generate URLs for fetching data, it is ignored for route matching and page navigation. See
+            <a href="#backendurlroutename-params---query">
+              <code>backendUrl</code>
+            </a>for more.</p>
+          <h2 id="-navurlroutename-params-query">
+            <code>## navUrl(routeName, params, query)</code>
+          </h2>
+          <p>Return a string representing a url for the route with name
+            <code>routeName</code>, and optionally form url params with the
+            <code>params</code>argument or query params with the
+            <code>query</code>argument. If
+            <code>prefix</code>was included with
+            <a href="#routerconfig">
+              <code>routerConfig</code>
+            </a>it will be prepended to the url. This function is used internally by programmatic navigation in
+            <a href="#linkprops-children">
+              <code>link</code>
+            </a>,
+            <a href="#navigateroutename-options">
+              <code>navigate</code>
+            </a>and
+            <a href="#pushhistoryroutename-options">
+              <code>pushHistory</code>
+            </a>and is generally not needed, but it exposed publically in case there is a need for the string. Note that the string is also returned by the programmatic functions.</p>
+          <p>
+            <strong>Note: to access this function from the return value of
+              <a href="#createconerouterelement-routes-defaultnavstate">
+                <code>createCone</code>
+              </a>call
+              <code>navUrl</code>
+            </strong>
+          </p>
+          <p>The following
+            <a href="#routes">
+              <code>route</code>
+            </a>:</p>
+          <pre>
+            <code class="language-javascript">{ path: &quot;/user/:userId&quot;, name: &quot;user&quot;, title: &quot;VanJS Example | User&quot;, callable: async () =&gt; import(&#39;./app/pages/user&#39;) }</code>
+          </pre>
+          <p>will result in the following:</p>
+          <pre>
+            <code class="language-javascript">navUrl(&#39;user&#39;, { userId: 123 }, { activeTab: &#39;profile&#39;}) // &quot;/user/123?activeTab=profile&quot;</code>
+          </pre>
+          <h2 id="-backendurlroutename-params-query">
+            <code>## backendUrl(routeName, params, query)</code>
+          </h2>
+          <p>Return a string backend url for the route with name
+            <code>routeName</code>, and optionally form url params with the
+            <code>params</code>argument or query params with the
+            <code>query</code>argument. The return can be used for fetching data. If
+            <code>backendPrefix</code>was included with
+            <a href="#routerconfig">
+              <code>routerConfig</code>
+            </a>it will be prepended to the url.</p>
+          <p>The following
+            <a href="#routerconfig">
+              <code>routerConfig</code>
+            </a>and
+            <a href="#routes">
+              <code>routes</code>
+            </a>:</p>
+          <pre>
+            <code class="language-javascript">const routerConfig = { backendPrefix: &#39;http://localhost:8000&#39; } const routes = [ { path: &quot;/user/:userId&quot;, backend: &quot;/api/user/:userId&quot; name: &quot;user&quot;, title: &quot;VanJS Example | User&quot;, callable: async () =&gt; import(&#39;./app/pages/user&#39;) } ]</code>
+          </pre>
+          <p>Will result in the following:</p>
+          <pre>
+            <code class="language-javascript">backendUrl(&#39;user&#39;, { userId: 123 }) // &quot;http://localhost:8000/api/user/123&quot; navUrl(&#39;user&#39;, { itemId: 123 }) // &quot;http://localhost:8000/user/123&quot;</code>
+          </pre>
+          <h2 id="navigateroutename-options">
+            <code>navigate(routeName, options)</code>
+          </h2>
+          <p>Programmatically navigate to
+            <code>routeName</code>using url generated by
+            <a href="#navurlroutename-params---query">
+              <code>navUrl</code>
+            </a>, returns url as a string.</p>
+          <p>
+            <code>routeName</code>- (required) a string representing the name of the route</p>
+          <p>
+            <code>options</code>- (optional) an object with the following optional options</p>
+          <ul>
+            <li>
+              <code>params</code>- supply url parameters to be used with
+              <code>routeName</code>to generate the url</li>
+            <li>
+              <code>query</code>- supply query string parameters to be used with
+              <code>routeName</code>to generate the url</li>
+            <li>
+              <code>navState</code>- if provided is provided it will be set as the browser history state using
+              <code>setNavState</code>returned by the
+              <a href="#createconerouterelement-routes-defaultnavstate">
+                <code>createCone</code>
+              </a>function.</li>
+            <li>
+              <code>context</code>- if provided it will be pased to the resolved component for
+              <code>routeName</code>. See
+              <a href="/docs/COMPONENT_GUIDE.html#full-component-example">
+                <code>example</code>
+              </a>for details.</li>
+            <li>
+              <code>dispatch</code>- if true (the default) DOM will be updated with component configured for the route. Pass false if only browser history needs to be updated. Note that if you only want to update history you should use the
+              <a href="#pushhistoryroutename-options">
+                <code>pushHistory</code>
+              </a>function instead.</li>
+          </ul>
+          <h2 id="pushhistoryroutename-options">
+            <code>pushHistory(routeName, options)</code>
+          </h2>
+          <p>A wrapper around
+            <a href="#navigateroutename-options">
+              <code>navigate</code>
+            </a>that will only push a new browser state to the history stack and will not change the DOM.</p>
+          <h2 id="iscurrentpagepagename">
+            <code>isCurrentPage(pageName)</code>
+          </h2>
+          <p>Returns a
+            <code>van.derive</code>object with a boolean that is true when
+            <code>pageName</code>is the active route</p>
+          <pre>
+            <code class="language-javascript">if (isCurrentPage(&quot;home&quot;).val) console.log(&quot;we&#39;re home!&quot;)</code>
+          </pre>
+          <h2 id="linkprops-children">
+            <code>link(props, ...children)</code>
+          </h2>
+          <p>A light wrapper around
+            <code>van.tags.a</code>that adds dynamic url generation for
+            <code>routeName</code>, with url and query params to be used when generating the url with
+            <a href="#navurlroutename-params---query">
+              <code>navUrl</code>
+            </a>. It also adds dynamic styling when
+            <code>routeName</code>is the active route. Additional context can be provided to the component resolved by the router. For example,
+            <code>link</code>could be used on a search results page to navigate to each item&#39;s page and could pass the item&#39;s data enabling item page to use preloaded data instead of fetching it.</p>
+          <h3 id="arguments">arguments</h3>
+          <p>The argument signature is the same as
+            <code>van.tags.a</code>but additional properties are available to the
+            <code>props</code>argument which configure how the link component works.</p>
+          <pre>
+            <code class="language-javascript">link(props, ...children)</code>
+          </pre>
+          <p>
+            <code>props</code>- an object that will be passed to the resulting
+            <code>van.tags.a</code>function, unchanged with the following exceptions:</p>
+          <p>These are Van Cone props which are used for navigation and
+            <strong>will not</strong>be passed to
+            <code>van.tags.a</code>:</p>
+          <ul>
+            <li>
+              <code>props.name</code>(required) - the name of the route to navigate to</li>
+            <li>
+              <code>props.params</code>(optional) - an object of url parameters defined by the route</li>
+            <li>
+              <code>props.query</code>(optional) - an object of query string parameters</li>
+            <li>
+              <code>props.context</code>(optional) - additional data to be passed to the component, see
+              <a href="/docs/COMPONENT_GUIDE.html#full-component-example">component example</a>for more info.</li>
+            <li>
+              <code>props.navState</code>(optional) - optional data to set on
+              <code>window.history.state</code>, see
+              <a href="#createconerouterelement-routes-defaultnavstate">
+                <code>createCone</code>
+              </a>for more.</li>
+          </ul>
+          <p>The following are standard
+            <code>a</code>tag props but have the following default values:</p>
+          <ul>
+            <li>
+              <code>props.target</code>(default:
+              <code>_self</code>)</li>
+            <li>
+              <code>props.class</code>(default:
+              <code>router-link</code>)</li>
+          </ul>
+          <p>The following are standard
+            <code>a</code>tag props but are set by the
+            <code>link</code>component and will be overwritten if provided:</p>
+          <ul>
+            <li>
+              <code>props.href</code>is set by a call to
+              <a href="#navurlroutename-params---query">
+                <code>navUrl</code>
+              </a>with
+              <code>props.name</code>,
+              <code>props.params</code>and
+              <code>props.query</code>
+            </li>
+            <li>
+              <code>props.role</code>is set to
+              <code>link</code>
+            </li>
+            <li>
+              <code>props.onClick</code>is set to an internal navigation function</li>
+          </ul>
+          <p>
+            <code>children</code>- is passed unchanged to the resulting
+            <code>van.tags.a</code>function.</p>
+          <h3 id="examples-1">examples</h3>
+          <p>A basic call to the route named
+            <code>home</code>with the inner text for the a tag
+            <code>Home</code>. This is the bare minimum required for
+            <code>link</code>.</p>
+          <pre>
+            <code class="language-javascript">link({name: &#39;home&#39;}, &#39;Home&#39;)</code>
+          </pre>
+          <p>A call to the route named
+            <code>user</code>with the url param
+            <code>userId</code>set to
+            <code>123</code>, the inner text for the a tag is
+            <code>User</code>.</p>
+          <pre>
+            <code class="language-javascript">link({name: &#39;user&#39;, params: {userId: 123}}, &#39;User&#39;)</code>
+          </pre>
+          <p>A call to the route named
+            <code>users</code>with the query param
+            <code>sort</code>set to
+            <code>asc</code>, the inner text for the link is
+            <code>ascending</code>.</p>
+          <pre>
+            <code class="language-javascript">link({name: &#39;users&#39;, query: {sort: &#39;asc&#39;}}, &#39;ascending&#39;)</code>
+          </pre>
+          <p>Pass additional context which can be any data type to the component resolved by the route. See
+            <a href="/docs/COMPONENT_GUIDE.html#full-component-example">example</a>for how to access context from within the component.</p>
+          <pre>
+            <code class="language-javascript">link({name: &#39;users&#39;, context: {value: &#39;hello world&#39;}}, &#39;User&#39;)</code>
+          </pre>
+          <h3 id="styling">styling</h3>
+          <p>By default the class name for the a tag will be
+            <code>router-link</code>but you can override it with the
+            <code>class</code>property:</p>
+          <pre>
+            <code class="language-javascript">link({name: &#39;home&#39;, class: &#39;navbar-link&#39;}, &quot;Home&quot;)</code>
+          </pre>
+          <p>When the route for a
+            <code>link</code>is active, the a tag&#39;s
+            <code>aria-current</code>property will be set to
+            <code>page</code>, which means you can set a custom style in your CSS like this:</p>
+          <pre>
+            <code class="language-css">/* normal route */ .navbar-link { color: grey; } /* active route */ .navbar-link[aria-current=&quot;page&quot;] { color: black; }</code>
+          </pre>
+          <h3 id="a-tag-only">a tag only</h3>
+          <p>Currently
+            <code>link</code>only supports returning an
+            <code>a</code>tag, but by using
+            <a href="#navigateroutename-options">
+              <code>navigate</code>
+            </a>you could make any element a router link, and then use
+            <a href="#iscurrentpagepagename">
+              <code>isCurrentPage</code>
+            </a>to dynamically change properties such as class or styling when the route is active.</p>
+        </div>
+      </div>
+    </body>
