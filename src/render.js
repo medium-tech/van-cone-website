@@ -1,21 +1,32 @@
 #!/usr/bin/env node
 import * as fs from 'fs';
 import * as path from 'path';
-import { marked } from 'marked';
-import { prettify, closify, entify } from 'htmlfy'
-import { gfmHeadingId, getHeadingList } from 'marked-gfm-heading-id';
-
+import { Marked } from 'marked';
+import { closify, entify } from 'htmlfy'
+import { gfmHeadingId } from 'marked-gfm-heading-id';
+import { markedHighlight } from "marked-highlight";
+import hljs from 'highlight.js';
 
 //
 // init
 //
+
+const marked = new Marked(
+    markedHighlight({
+      langPrefix: 'hljs language-',
+      highlight(code, lang, info) {
+        const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+        return hljs.highlight(code, { language }).value;
+      }
+    })
+  );
 
 marked.use(gfmHeadingId());
 
 const __dirname = path.resolve();
 const distPath = path.join(__dirname, 'dist');
 const assetsPath = path.join(__dirname, 'assets');
-const vanConePath = path.join(__dirname, 'van/addons/van_cone');
+const vanConePath = path.join(__dirname, 'van-cone');
 
 const dist = (filePath) => path.join(distPath, filePath);
 const asset = (filePath) => path.join(assetsPath, filePath);
@@ -25,7 +36,21 @@ const vanCone = (filePath) => path.join(vanConePath, filePath);
 const vanConePackage = JSON.parse(fs.readFileSync(vanCone('package.json'), 'utf-8'));
 
 //
-// convert links when parsing md
+// custom renderer
+//
+
+// function postprocess(html) {
+//     console.log('postprocess');
+//     // replace every </a> with "</a> "
+//     //html = html.replace(/<\/a>/g, '</a>&nbsp;');
+//     return html;
+
+//   }
+  
+// marked.use({ hooks: { postprocess } });
+
+//
+// convert link address when parsing markdown
 //
 
 const linkMap = {
@@ -36,25 +61,12 @@ const linkMap = {
 // Override function
 const walkTokens = (token) => {
     
-    if (token.type === 'heading') {
-
-        if(token.raw.includes('{')) {
-            console.log(token)
-            const replacement = token.raw.replaceAll(' = {}', '').replaceAll('`', '') // these characters mess up the heading ids
-            token.raw = replacement;
-            token.text = replacement;
-            token.tokens[0].raw = replacement;
-            token.tokens[0].text = replacement;
-            console.log(token)
-        }
-
-    }else if (token.type === 'link') {
+    if (token.type === 'link') {
         let newHref = '-'
 
         if (token.href.startsWith('http')) return;
-        //if (token.href.startsWith('#')) return; 
 
-        // format link
+        // format urls to be relative to the root and point to .html insted of .md files
         Object.keys(linkMap).forEach(key => {
             if (token.href.includes(key)) {
                 const [_, id] = token.href.split('#');
@@ -80,11 +92,14 @@ marked.use({ walkTokens });
 // render functions
 //
 
+let allClassNames = [];
+
 const renderPage = (sourcePath, outputPath, pageTitle, indentLevel) => {
     // parse and remove the most common zerowidth characters from the start of the file
     const source = fs.readFileSync(sourcePath, 'utf-8');
     const parsed = marked.parse(source.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ''));
     const indent = indentLevel ? '    '.repeat(indentLevel) : '';
+    // @ts-ignore
     const body = parsed.split('\n').map(line => `${indent}${line}`).join('\n');
 
     const html = `<!DOCTYPE html>
@@ -102,7 +117,10 @@ const renderPage = (sourcePath, outputPath, pageTitle, indentLevel) => {
     </div>
 </body>`;
 
-    const output = prettify(closify(entify(html)));
+    const output = closify(entify(html))
+    
+    // find all class names
+    allClassNames.push(...output.match(/class="[^"]*"/g).map(match => match.replace(/class="([^"]*)"/g, '$1')))
 
     // write to file
     const outputPathFull = dist(outputPath);
@@ -118,12 +136,15 @@ const renderPage = (sourcePath, outputPath, pageTitle, indentLevel) => {
 // execute build
 //
 
-renderPage(asset('INDEX.md'), 'index.html', 'Van Cone', 6);
-renderPage(vanCone('docs/API_REFERENCE.md'), 'docs/API_REFERENCE.html', 'Van Cone | API', 6);
-//console.log(getHeadingList());
-renderPage(vanCone('docs/COMPONENT_GUIDE.md'), 'docs/COMPONENT_GUIDE.html', 'Van Cone | Component guide', 6);
+renderPage(asset('INDEX.md'), 'index.html', 'Van Cone', 0);
+renderPage(vanCone('docs/API_REFERENCE.md'), 'docs/API_REFERENCE.html', 'Van Cone | API Documentation', 0);
+renderPage(vanCone('docs/GETTING_STARTED.md'), 'docs/GETTING_STARTED.html', 'Van Cone | Getting Started', 0);
+renderPage(vanCone('docs/COMPONENT_GUIDE.md'), 'docs/COMPONENT_GUIDE.html', 'Van Cone | Component Guide', 0);
 
 fs.copyFileSync(asset('./style.css'), dist('style.css'));
 
-console.log(`Van Cone ${vanConePackage.version} website build complete!`)
+const uniqueClassNames = [...new Set(allClassNames)];
+const hslsClassNames = uniqueClassNames.filter(className => className.includes('hljs'));
+// console.log(hslsClassNames);
 
+console.log(`Van Cone ${vanConePackage.version} website build complete!`)
