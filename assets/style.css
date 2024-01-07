@@ -30,7 +30,7 @@ code highlighting
 }
 
 .hljs-title {
-  color: #008000;
+  color: #d97e49;
   font-weight: bold;
 }
 
@@ -40,10 +40,10 @@ code highlighting
 }
 
 .hljs-string, .hljs-literal, .hljs-symbol, .hljs-number {
-  color: #c36a36;
+  color: #008000;
 }
 
-.hljs-attr {
+.hljs-attr, .hljs-property {
   color: #1a1ada;
 }
 
@@ -54,3 +54,5 @@ code highlighting
 .hljs-comment {
   color: #808080;
 }
+
+

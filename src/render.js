@@ -54,8 +54,9 @@ const vanConePackage = JSON.parse(fs.readFileSync(vanCone('package.json'), 'utf-
 //
 
 const linkMap = {
-    'API_REFERENCE': '/docs/API_REFERENCE.html',
-    'COMPONENT_GUIDE': '/docs/COMPONENT_GUIDE.html'
+    'getting-started': '/getting-started.html',
+    'api-reference': '/api-reference.html',
+    'component-guide': '/component-guide.html'
 }
 
 // Override function
@@ -120,7 +121,9 @@ const renderPage = (sourcePath, outputPath, pageTitle, indentLevel) => {
     const output = closify(entify(html))
     
     // find all class names
-    allClassNames.push(...output.match(/class="[^"]*"/g).map(match => match.replace(/class="([^"]*)"/g, '$1')))
+    // @ts-ignore
+    const classNames = output.match(/class="[^"]*"/g).map(match => match.replace(/class="([^"]*)"/g, '$1'))
+    if (classNames !== null) allClassNames.push(...classNames)
 
     // write to file
     const outputPathFull = dist(outputPath);
@@ -136,15 +139,15 @@ const renderPage = (sourcePath, outputPath, pageTitle, indentLevel) => {
 // execute build
 //
 
-renderPage(asset('INDEX.md'), 'index.html', 'Van Cone', 0);
-renderPage(vanCone('docs/API_REFERENCE.md'), 'docs/API_REFERENCE.html', 'Van Cone | API Documentation', 0);
-renderPage(vanCone('docs/GETTING_STARTED.md'), 'docs/GETTING_STARTED.html', 'Van Cone | Getting Started', 0);
-renderPage(vanCone('docs/COMPONENT_GUIDE.md'), 'docs/COMPONENT_GUIDE.html', 'Van Cone | Component Guide', 0);
+renderPage(vanCone('docs/INDEX.md'), 'index.html', 'Van Cone', 0);
+renderPage(vanCone('docs/api-reference.md'), 'api-reference.html', 'Van Cone | API Documentation', 0);
+renderPage(vanCone('docs/getting-started.md'), 'getting-started.html', 'Van Cone | Getting Started', 0);
+renderPage(vanCone('docs/component-guide.md'), 'component-guide.html', 'Van Cone | Component Guide', 0);
 
 fs.copyFileSync(asset('./style.css'), dist('style.css'));
 
 const uniqueClassNames = [...new Set(allClassNames)];
 const hslsClassNames = uniqueClassNames.filter(className => className.includes('hljs'));
-// console.log(hslsClassNames);
+console.log(hslsClassNames);
 
 console.log(`Van Cone ${vanConePackage.version} website build complete!`)

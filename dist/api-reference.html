@@ -67,7 +67,7 @@
 <p><strong><code>title</code></strong> (optional) if provided the title of the page will change to this when this route is active.</p>
 <h3 id="example">example</h3>
 <p>Below is a basic example showing routes with url and query params and how to consume them in a component.</p>
-<p>See the <a href="/docs/COMPONENT_GUIDE.html">component guide</a> for more examples.</p>
+<p>See the <a href="/component-guide.html">component guide</a> for more examples.</p>
 <pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">userPage</span> = (<span class="hljs-params">params</span>) =&gt; <span class="hljs-title function_">div</span>(<span class="hljs-string">&#x27;User Page&#x27;</span>, <span class="hljs-title function_">p</span>(<span class="hljs-string">&#x27;userId: &#x27;</span> + params.<span class="hljs-property">userId</span>))
 <span class="hljs-keyword">const</span> <span class="hljs-title function_">userListPage</span> = (<span class="hljs-params">params, query</span>) =&gt; <span class="hljs-title function_">div</span>(<span class="hljs-string">&#x27;User List&#x27;</span>, <span class="hljs-title function_">p</span>(<span class="hljs-string">&#x27;sort by: &#x27;</span> + query.<span class="hljs-property">sort</span>))
 
@@ -130,7 +130,7 @@
 <li><code>params</code> - supply url parameters to be used with <code>routeName</code> to generate the url</li>
 <li><code>query</code> - supply query string parameters to be used with <code>routeName</code> to generate the url</li>
 <li><code>navState</code> - if provided is provided it will be set as the browser history state using <code>setNavState</code> returned by the <a href="#createconerouterelement-routes-defaultnavstate"><code>createCone</code></a> function.</li>
-<li><code>context</code> - if provided it will be pased to the resolved component for <code>routeName</code>. See <a href="/docs/COMPONENT_GUIDE.html#full-component-example"><code>example</code></a> for details.</li>
+<li><code>context</code> - if provided it will be pased to the resolved component for <code>routeName</code>. See <a href="/component-guide.html#full-component-example"><code>example</code></a> for details.</li>
 <li><code>dispatch</code> - if true (the default) DOM will be updated with component configured for the route. Pass false if only browser history needs to be updated. Note that if you only want to update history you should use the <a href="#pushhistoryroutename-options"><code>pushHistory</code></a> function instead.</li>
 </ul>
 <h2 id="pushhistoryroutename-options"><code>pushHistory(routeName, options)</code></h2>
@@ -149,7 +149,7 @@
 <li><code>props.name</code> (required) - the name of the route to navigate to</li>
 <li><code>props.params</code> (optional) - an object of url parameters defined by the route</li>
 <li><code>props.query</code> (optional) - an object of query string parameters</li>
-<li><code>props.context</code> (optional) - additional data to be passed to the component, see <a href="/docs/COMPONENT_GUIDE.html#full-component-example">component example</a> for more info.</li>
+<li><code>props.context</code> (optional) - additional data to be passed to the component, see <a href="/component-guide.html#full-component-example">component example</a> for more info.</li>
 <li><code>props.navState</code> (optional) - optional data to set on <code>window.history.state</code>, see <a href="#createconerouterelement-routes-defaultnavstate"><code>createCone</code></a> for more.</li>
 </ul>
 <p>The following are standard <code>a</code> tag props but have the following default values:</p>
@@ -171,7 +171,7 @@
 <pre><code class="hljs language-javascript"><span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-attr">params</span>: {<span class="hljs-attr">userId</span>: <span class="hljs-number">123</span>}}, <span class="hljs-string">&#x27;User&#x27;</span>)
 </code></pre><p>A call to the route named <code>users</code> with the query param <code>sort</code> set to <code>asc</code>, the inner text for the link is <code>ascending</code>.</p>
 <pre><code class="hljs language-javascript"><span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;users&#x27;</span>, <span class="hljs-attr">query</span>: {<span class="hljs-attr">sort</span>: <span class="hljs-string">&#x27;asc&#x27;</span>}}, <span class="hljs-string">&#x27;ascending&#x27;</span>)
-</code></pre><p>Pass additional context which can be any data type to the component resolved by the route. See <a href="/docs/COMPONENT_GUIDE.html#full-component-example">example</a> for how to access context from within the component.</p>
+</code></pre><p>Pass additional context which can be any data type to the component resolved by the route. See <a href="/component-guide.html#full-component-example">example</a> for how to access context from within the component.</p>
 <pre><code class="hljs language-javascript"><span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;users&#x27;</span>, <span class="hljs-attr">context</span>: {<span class="hljs-attr">value</span>: <span class="hljs-string">&#x27;hello world&#x27;</span>}}, <span class="hljs-string">&#x27;User&#x27;</span>)
 </code></pre><h3 id="styling">styling</h3>
 <p>By default the class name for the a tag will be <code>router-link</code> but you can override it with the <code>class</code> property:</p>
