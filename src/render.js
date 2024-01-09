@@ -11,6 +11,7 @@ import hljs from 'highlight.js';
 // init
 //
 
+// for syntax highlighting in code blocks
 const marked = new Marked(
     markedHighlight({
       langPrefix: 'hljs language-',
@@ -23,64 +24,40 @@ const marked = new Marked(
 
 marked.use(gfmHeadingId());
 
+// paths
 const __dirname = path.resolve();
-const distPath = path.join(__dirname, 'dist');
+const buildPath = path.join(__dirname, 'docs');
 const assetsPath = path.join(__dirname, 'assets');
 const vanConePath = path.join(__dirname, 'van-cone');
 
-const dist = (filePath) => path.join(distPath, filePath);
+const build = (filePath) => path.join(buildPath, filePath);
 const asset = (filePath) => path.join(assetsPath, filePath);
 const vanCone = (filePath) => path.join(vanConePath, filePath);
 
-// import van cone package file
 const vanConePackage = JSON.parse(fs.readFileSync(vanCone('package.json'), 'utf-8'));
-
-//
-// custom renderer
-//
-
-// function postprocess(html) {
-//     console.log('postprocess');
-//     // replace every </a> with "</a> "
-//     //html = html.replace(/<\/a>/g, '</a>&nbsp;');
-//     return html;
-
-//   }
-  
-// marked.use({ hooks: { postprocess } });
 
 //
 // convert link address when parsing markdown
 //
 
 const linkMap = {
-    'getting-started': '/getting-started.html',
-    'api-reference': '/api-reference.html',
-    'component-guide': '/component-guide.html'
+    'getting-started.md': 'getting-started.html',
+    'api-reference.md': 'api-reference.html',
+    'component-guide.md': 'component-guide.html'
 }
 
 // Override function
 const walkTokens = (token) => {
     
     if (token.type === 'link') {
-        let newHref = '-'
-
         if (token.href.startsWith('http')) return;
 
         // format urls to be relative to the root and point to .html insted of .md files
         Object.keys(linkMap).forEach(key => {
-            if (token.href.includes(key)) {
-                const [_, id] = token.href.split('#');
-                if(typeof id === 'undefined') {
-                    newHref = linkMap[key];
-                }else{
-                    newHref = `${linkMap[key]}#${id}`
-                }
-            }
+            token.href = token.href.replace(key, linkMap[key])
         })
 
         // console.log('found link: ', token.href, newHref);
-        if (newHref !== '-') token.href = newHref;
     }
 
     
@@ -95,13 +72,10 @@ marked.use({ walkTokens });
 
 let allClassNames = [];
 
-const renderPage = (sourcePath, outputPath, pageTitle, indentLevel) => {
+const renderPage = (sourcePath, outputPath, pageTitle) => {
     // parse and remove the most common zerowidth characters from the start of the file
     const source = fs.readFileSync(sourcePath, 'utf-8');
-    const parsed = marked.parse(source.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ''));
-    const indent = indentLevel ? '    '.repeat(indentLevel) : '';
-    // @ts-ignore
-    const body = parsed.split('\n').map(line => `${indent}${line}`).join('\n');
+    const body = marked.parse(source.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ''));
 
     const html = `<!DOCTYPE html>
 <html lang="en">
@@ -111,22 +85,31 @@ const renderPage = (sourcePath, outputPath, pageTitle, indentLevel) => {
     <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="content">
-            ${body}
-        </div>
+    <img id="van-logo-right-side" src="../img/logo-615x892.png" alt="Van Cone Logo" />   
+    <div id="sidebar">
+        <a href="/"><h1>Van Cone</h1></a>
+        <a id="van-logo-sidebar" href="/">
+            <img id="van-logo-sidebar-img" src="../img/logo-308x446.png" alt="Van Cone Logo" />
+        </a>
+        <ul>
+            <li><a href="/latest/getting-started.html">Getting Started</a></li>
+            <li><a href="/latest/component-guide.html">Component Guide</a></li>
+            <li><a href="/latest/api-reference.html">API Reference</a></li>
+        </ul>
+    </div>
+    <div id="content">
+        ${body}
     </div>
 </body>`;
 
     const output = closify(entify(html))
     
-    // find all class names
     // @ts-ignore
     const classNames = output.match(/class="[^"]*"/g).map(match => match.replace(/class="([^"]*)"/g, '$1'))
     if (classNames !== null) allClassNames.push(...classNames)
 
     // write to file
-    const outputPathFull = dist(outputPath);
+    const outputPathFull = build(outputPath);
 
     // ensure output directory exists
     const outputDir = path.dirname(outputPathFull);
@@ -139,13 +122,18 @@ const renderPage = (sourcePath, outputPath, pageTitle, indentLevel) => {
 // execute build
 //
 
-renderPage(vanCone('docs/INDEX.md'), 'index.html', 'Van Cone', 0);
-renderPage(vanCone('docs/api-reference.md'), 'api-reference.html', 'Van Cone | API Documentation', 0);
-renderPage(vanCone('docs/getting-started.md'), 'getting-started.html', 'Van Cone | Getting Started', 0);
-renderPage(vanCone('docs/component-guide.md'), 'component-guide.html', 'Van Cone | Component Guide', 0);
+renderPage(vanCone('docs/api-reference.md'), 'latest/api-reference.html', 'Van Cone | API Documentation');
+renderPage(vanCone('docs/getting-started.md'), 'latest/getting-started.html', 'Van Cone | Getting Started');
+renderPage(vanCone('docs/component-guide.md'), 'latest/component-guide.html', 'Van Cone | Component Guide');
 
-fs.copyFileSync(asset('./style.css'), dist('style.css'));
+fs.copyFileSync(asset('./index.html'), build('index.html'));
+fs.copyFileSync(asset('./style.css'), build('style.css'));
 
+if (!fs.existsSync(build('img'))) fs.mkdirSync(build('img'));
+fs.copyFileSync(asset('./img/logo-615x892.png'), build('./img/logo-615x892.png'));
+fs.copyFileSync(asset('./img/logo-308x446.png'), build('./img/logo-308x446.png'));
+
+// find all syntax highlighting class names
 const uniqueClassNames = [...new Set(allClassNames)];
 const hslsClassNames = uniqueClassNames.filter(className => className.includes('hljs'));
 console.log(hslsClassNames);

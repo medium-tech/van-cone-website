@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "src/render.js",
-    "dev": "fswatch -o src assets van-cone/docs | xargs -n1 -I{} npm run build",
-    "preview": "http-server ./dist -c-1"
+    "dev": "npm run build; fswatch -o src assets van-cone/docs | xargs -n1 -I{} npm run build",
+    "preview": "http-server ./docs -c-1"
   },
   "devDependencies": {
     "highlight.js": "^11.9.0",

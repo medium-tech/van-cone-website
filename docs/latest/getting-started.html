@@ -6,16 +6,27 @@
     <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="content">
-            <h1 id="getting-started">Getting Started</h1>
+    <img id="van-logo-right-side" src="../img/logo-615x892.png" alt="Van Cone Logo" />   
+    <div id="sidebar">
+        <a href="/"><h1>Van Cone</h1></a>
+        <a id="van-logo-sidebar" href="/">
+            <img id="van-logo-sidebar-img" src="../img/logo-308x446.png" alt="Van Cone Logo" />
+        </a>
+        <ul>
+            <li><a href="/latest/getting-started.html">Getting Started</a></li>
+            <li><a href="/latest/component-guide.html">Component Guide</a></li>
+            <li><a href="/latest/api-reference.html">API Reference</a></li>
+        </ul>
+    </div>
+    <div id="content">
+        <h1 id="getting-started">Getting Started</h1>
 <h3 id="-van-cone-is-in-beta-">🚨 <strong>Van Cone is in Beta</strong> 🚨</h3>
 <p>At this point API changes are not expected but possible, the API is almost frozen for a version 1. I&#39;m waiting to take it out of alpha status until I have unittests written, now that I&#39;m almost settled on the API, those are my next task. Also see contribution instructions below if you can contribute.</p>
 <h1 id="installation">Installation</h1>
 <pre><code class="hljs language-bash">npm install van-cone
 </code></pre><h1 id="overview">Overview</h1>
 <p>Van Cone is a minimal framework that provides routing, history and a link component that provides dynamic styling for when it is the active link.</p>
-<p>There is only one exported function which is used to create an application object. You provide it with the DOM element that will contain the app, a list of routes, and an optional default state for <code>window.history.state</code> and it returns an object with several SPA helper functions.</p>
+<p>There is only one exported function <a href="./api-reference.html#createconerouterelement-routes-defaultnavstate"><code>createCone</code></a> which is used to create an application object. You provide it with the DOM element that will contain the app, a list of routes, and an optional default state for <code>window.history.state</code> and it returns an object with several SPA helper functions.</p>
 <h3 id="a-basic-application">A basic application</h3>
 <p>Javascript:</p>
 <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> createCone <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;van-cone&#x27;</span>;
@@ -62,13 +73,22 @@
   <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
 </code></pre><h1 id="components">Components</h1>
-<p>In <a href="https://vanjs.org">VanJS</a> and Van Cone components are simply Javascript functions, there is no need for a specific object type as it adds unnecessary overhead to the frameworks. However, you&#39;ll note in the example above the <code>userPage</code> &quot;component&quot; is expecting a parameter <code>params</code> which is an object that includes a <code>userId</code> property parsed out of the url. The Van Cone router passes a specific set of arguments to the &quot;component&quot; which are standard in many SPA frameworks. Read the <a href="/component-guide.html">Component Guide</a> for more information.</p>
+<p>In <a href="https://vanjs.org">VanJS</a> and Van Cone components are simply Javascript functions, there is no need for a specific object type as it adds unnecessary overhead to the frameworks. However, you&#39;ll note in the example above the <code>userPage</code> &quot;component&quot; is expecting a parameter <code>params</code> which is an object that includes a <code>userId</code> property parsed out of the url. The Van Cone router passes a specific set of arguments to the &quot;component&quot; which are commonly found in SPA frameworks. Read the <a href="./component-guide.html">Component Guide</a> for more information.</p>
+<h1 id="navigation">Navigation</h1>
+<h2 id="component-navigation">component navigation</h2>
+<ul>
+<li><a href="./api-reference.html#linkprops-children">link</a></li>
+</ul>
+<h2 id="programmatic-navigation-functions">programmatic navigation functions</h2>
+<ul>
+<li><a href="./api-reference.html#navigateroutename-options">navigate</a></li>
+<li><a href="./api-reference.html#pushhistoryroutename-options">pushHistory</a></li>
+</ul>
 <h1 id="what-next">What next?</h1>
 <ul>
-<li><a href="/api-reference.html">API Documentation</a></li>
-<li><a href="/component-guide.html">Component Guide</a></li>
+<li><a href="./api-reference.html">API Documentation</a></li>
+<li><a href="./component-guide.html">Component Guide</a></li>
 </ul>
 
-        </div>
     </div>
 </body>

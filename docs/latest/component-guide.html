@@ -6,9 +6,20 @@
     <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="content">
-            <h1 id="van-cone--component-and-routing-guide">Van Cone | component and routing guide</h1>
+    <img id="van-logo-right-side" src="../img/logo-615x892.png" alt="Van Cone Logo" />   
+    <div id="sidebar">
+        <a href="/"><h1>Van Cone</h1></a>
+        <a id="van-logo-sidebar" href="/">
+            <img id="van-logo-sidebar-img" src="../img/logo-308x446.png" alt="Van Cone Logo" />
+        </a>
+        <ul>
+            <li><a href="/latest/getting-started.html">Getting Started</a></li>
+            <li><a href="/latest/component-guide.html">Component Guide</a></li>
+            <li><a href="/latest/api-reference.html">API Reference</a></li>
+        </ul>
+    </div>
+    <div id="content">
+        <h1 id="component-and-routing-guide">Component and routing guide</h1>
 <p>In an effort to keep the VanJS ecosystem lightweight Van Cone does define a component object like many reactive frameworks however you will see that they are not necessary with Van Cone/VanJS. When the term component is used in Van Cone documentation it refers to a callable that takes a specific set of arguments from the Van Cone router and returns a tag element from Van JS, for example <code>van.tags.div</code>.</p>
 <p>In this guide you will find:</p>
 <ul>
@@ -27,7 +38,7 @@
 <pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">myComponent</span> = (<span class="hljs-params">params, query, context</span>) =&gt; <span class="hljs-title function_">div</span>(...)
 </code></pre><p><code>params</code> - an object of parameters parsed out of the url, see example below for defining the router. If no parameters were defined in the router this will be an empty object.</p>
 <p><code>query</code> - an object of query string parameters, if none exist in the url this will be an empty object.</p>
-<p><code>context</code> - additional context (for example prefetched data) can be passed to the component when navigating using the <a href="/api-reference.html#linkprops-children">link component</a> or the programmatic navigation function <a href="/api-reference.html#navigateroutename-options">navigate</a>. If none is provided this will be an empty object. Typically this would be an object but it could be any data type.</p>
+<p><code>context</code> - additional context (for example prefetched data) can be passed to the component when navigating using the <a href="./api-reference.html#linkprops-children">link component</a> or the programmatic navigation function <a href="./api-reference.html#navigateroutename-options">navigate</a>. If none is provided this will be an empty object. Typically this would be an object but it could be any data type.</p>
 <h2 id="examples">examples</h2>
 <h3 id="the-hello-world">the hello world</h3>
 <pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">homePage</span> = (<span class="hljs-params"></span>) =&gt; <span class="hljs-title function_">div</span>(<span class="hljs-string">&#x27;Home Page&#x27;</span>)
@@ -83,11 +94,11 @@
     <span class="hljs-title function_">p</span>(<span class="hljs-string">&quot;some query string data: &quot;</span> + query.<span class="hljs-property">data</span>)
   );
 }
-</code></pre><p>You can use the <a href="/api-reference.html#linkprops-children"><code>link</code></a> component to navigate to this page like this:</p>
+</code></pre><p>You can use the <a href="./api-reference.html#linkprops-children"><code>link</code></a> component to navigate to this page like this:</p>
 <pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> data = {<span class="hljs-string">&#x27;name&#x27;</span>: <span class="hljs-string">&#x27;María&#x27;</span>}
 <span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-attr">params</span>: {<span class="hljs-attr">id</span>: <span class="hljs-number">123</span>}, <span class="hljs-attr">query</span>: {<span class="hljs-string">&#x27;data&#x27;</span>: <span class="hljs-string">&#x27;hello&#x27;</span>}, <span class="hljs-attr">context</span>: data}, <span class="hljs-string">&#x27;User&#x27;</span>)
 </code></pre><h3 id="different-backend-endpoint">different backend endpoint</h3>
-<p>When data is fetched from a different endpoint provide a backend path as follows. See <a href="/api-reference.html#backendurlroutename-params-query">backendUrl</a> for information on generating a backend url for fetching data.</p>
+<p>When data is fetched from a different endpoint provide a backend path as follows. See <a href="./api-reference.html#backendurlroutename-params-query">backendUrl</a> for information on generating a backend url for fetching data.</p>
 <pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> routes = [
     {
         <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/user/:userId&quot;</span>,
@@ -153,6 +164,5 @@
   }
 ];
 </code></pre>
-        </div>
     </div>
 </body>
