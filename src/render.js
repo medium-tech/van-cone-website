@@ -137,12 +137,6 @@ if (!fs.existsSync(build('img'))) fs.mkdirSync(build('img'));
 fs.copyFileSync(asset('./img/logo-615x892.png'), build('./img/logo-615x892.png'));
 fs.copyFileSync(asset('./img/logo-308x446.png'), build('./img/logo-308x446.png'));
 
-// linkPrefix = '/version/' + vanConePackage.version + '/';
-// renderPage(vanCone('docs/api-reference.md'), linkPrefix + 'api-reference.html', 'Van Cone | API Documentation');
-// renderPage(vanCone('docs/getting-started.md'), linkPrefix + 'getting-started.html', 'Van Cone | Getting Started');
-// renderPage(vanCone('docs/component-guide.md'), linkPrefix + 'component-guide.html', 'Van Cone | Component Guide');
-
-
 // find all syntax highlighting class names
 const uniqueClassNames = [...new Set(allClassNames)];
 const hslsClassNames = uniqueClassNames.filter(className => className.includes('hljs'));
