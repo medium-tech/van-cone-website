@@ -20,10 +20,10 @@
     </div>
     <div id="content">
         <h1 id="component-and-routing-guide">Component and routing guide</h1>
-<p>In an effort to keep the VanJS ecosystem lightweight Van Cone does define a component object like many reactive frameworks however you will see that they are not necessary with Van Cone/VanJS. When the term component is used in Van Cone documentation it refers to a callable that takes a specific set of arguments from the Van Cone router and returns a tag element from Van JS, for example <code>van.tags.div</code>.</p>
+<p>In an effort to keep the VanJS ecosystem minimal Van Cone does not define a component object or function like many reactive frameworks however you will see that they are not necessary with Van Cone and VanJS. When the term component is used in Van Cone documentation it refers to a callable that takes a specific set of arguments from the Van Cone router and returns a tag element from Van JS, for example <code>van.tags.div</code>. These &quot;components&quot; are only used with the router to create a navigable page, for other re-useable &quot;components&quot; you can use a bare function like normal VanJS code.</p>
 <p>In this guide you will find:</p>
 <ul>
-<li><a href="#function-signature">component function definition</a></li>
+<li><a href="#function-signature">component function signature</a></li>
 <li><a href="#hello-world-with-router">a hello world example</a></li>
 <li><a href="#url--query-params-example">a url and query param example</a></li>
 <li><a href="#full-component-example">a full component example with nav link component and context</a></li>
@@ -39,7 +39,9 @@
 </code></pre><p><code>params</code> - an object of parameters parsed out of the url, see example below for defining the router. If no parameters were defined in the router this will be an empty object.</p>
 <p><code>query</code> - an object of query string parameters, if none exist in the url this will be an empty object.</p>
 <p><code>context</code> - additional context (for example prefetched data) can be passed to the component when navigating using the <a href="/latest/api-reference.html#linkprops-children">link component</a> or the programmatic navigation function <a href="/latest/api-reference.html#navigateroutename-options">navigate</a>. If none is provided this will be an empty object. Typically this would be an object but it could be any data type.</p>
-<h2 id="examples">examples</h2>
+<h2 id="function-return">function return</h2>
+<p>An <code>HTMLElement</code>, typically (but not necessarily) created by a VanJS tag, such as <code>van.tags.div</code>.</p>
+<h1 id="examples">Examples</h1>
 <h3 id="the-hello-world">the hello world</h3>
 <pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">homePage</span> = (<span class="hljs-params"></span>) =&gt; <span class="hljs-title function_">div</span>(<span class="hljs-string">&#x27;Home Page&#x27;</span>)
 </code></pre><p>You obviously don&#39;t need a framework to do this, outside of the Van Cone router, components are generally not needed because they are simply a function that returns a van element. They are many ways to create re-usable components, component functions in Van Cone are only useful to create a concept of a page that integrates with the router.</p>

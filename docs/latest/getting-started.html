@@ -23,10 +23,20 @@
 <h1 id="installation">Installation</h1>
 <pre><code class="hljs language-bash">npm install van-cone
 </code></pre><h1 id="overview">Overview</h1>
-<p>Van Cone is a minimal framework that provides routing, history and a link component that provides dynamic styling for when it is the active link.</p>
-<p>There is only one exported function <a href="/latest/api-reference.html#createconerouterelement-routes-defaultnavstate"><code>createCone</code></a> which is used to create an application object. You provide it with the DOM element that will contain the app, a list of routes, and an optional default state for <code>window.history.state</code> and it returns an object with several SPA helper functions.</p>
-<h3 id="a-basic-application">A basic application</h3>
-<p>Javascript:</p>
+<p>Van Cone is a minimal framework that provides routing, history and a link component that provides dynamic styling for when it is the active link. It is necessary to know the basics of <a href="https://vanjs.org">VanJS</a> to use Van Cone, once you know VanJS, Van Cone is simple.</p>
+<p>Van Cone has only one exported function <a href="/latest/api-reference.html#createconerouterelement-routes-defaultnavstate"><code>createCone</code></a> which is used to create an application object. You provide it with the DOM element that will contain the app, a list of routes, and an optional default state for <code>window.history.state</code> and it returns an object with several SPA helper functions.</p>
+<h3 id="typescript">TypeScript</h3>
+<ul>
+<li>Supported! 🥳</li>
+</ul>
+<h1 id="your-first-van-cone-app">Your first Van Cone App</h1>
+<p>Init your npm project</p>
+<pre><code>npm init
+</code></pre><p>This example uses vite for building and previewing your application:</p>
+<pre><code>npm install vite --save-dev
+</code></pre><p>Install VanJS and Van Cone</p>
+<pre><code>npm install vanjs-core van-cone --save
+</code></pre><p>Paste the following into a file called <code>index.js</code>, or whatever the value for <code>main</code> is in your <code>package.json</code> file.</p>
 <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> createCone <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;van-cone&#x27;</span>;
 <span class="hljs-keyword">import</span> van <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vanjs-core&#x27;</span>;
 <span class="hljs-keyword">const</span> { div, p, span, hr } = van.<span class="hljs-property">tags</span>;
@@ -56,7 +66,7 @@
   );
 
 <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">replaceChildren</span>(<span class="hljs-title class_">App</span>());
-</code></pre><p>HTML:</p>
+</code></pre><p>Paste the following into a file called <code>index.html</code>. Make sure the script src tag is pointing at the JS file you just created.</p>
 <pre><code class="hljs language-html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
@@ -67,17 +77,47 @@
     <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>VanJS Hello World<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./src/index.js&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./index.js&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</code></pre><p>Update your <code>package.json</code> file to have the following commands under <code>scripts</code>.</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-comment">// ...</span>
+  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;dev&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vite&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;build&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vite build&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-comment">// ...</span>
+<span class="hljs-punctuation">}</span>
+</code></pre><p>Test your app:</p>
+<pre><code>npm run dev
+</code></pre><p>Now visit the address shown in your terminal and you will see your first Van Cone app!</p>
+<p>The Javascript file defines two page components, their routes, the Van Cone app config and the page layout (ie. page content and nav bar).</p>
+<p>The HTML file is minimal, only defining page title and which Javascript file to use.</p>
+<p>Vite, is used for building and previewing, you can read it&#39;s <a href="https://vitejs.dev">documentation here</a> and run the build process using the command we just setup:</p>
+<pre><code>npm run build
+</code></pre><p>If you&#39;re interested in tracking your application&#39;s size you can install the vite bundle visualizer like this:</p>
+<pre><code>npm install vite-bundle-visualizer --save-dev
+</code></pre><p>And update your <code>package.json</code> <code>scripts</code> section like this:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-comment">// ...</span>
+  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;dev&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vite&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;build&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vite build&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;bundle-visualizer&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vite-bundle-visualizer&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-comment">// ...</span>
+<span class="hljs-punctuation">}</span>
+</code></pre><p>Run the following to open a bundle visualizer showing what is taking up space in your build.</p>
+<pre><code>npm run bundle-visualizer
 </code></pre><h1 id="components">Components</h1>
-<p>In <a href="https://vanjs.org">VanJS</a> and Van Cone components are simply Javascript functions, there is no need for a specific object type as it adds unnecessary overhead to the frameworks. However, you&#39;ll note in the example above the <code>userPage</code> &quot;component&quot; is expecting a parameter <code>params</code> which is an object that includes a <code>userId</code> property parsed out of the url. The Van Cone router passes a specific set of arguments to the &quot;component&quot; which are commonly found in SPA frameworks. Read the <a href="/latest/component-guide.html">Component Guide</a> for more information.</p>
+<p>In <a href="https://vanjs.org">VanJS</a> and Van Cone components are simply Javascript functions, there is no need for a specific object type as it adds unnecessary overhead to the frameworks. However, you&#39;ll note in the example above the <code>userPage</code> &quot;component&quot; is expecting a parameter <code>params</code> which is an object that includes a <code>userId</code> property parsed out of the url. The Van Cone router passes a specific set of arguments to the &quot;component&quot; providing SPA functionality without the overhead of an actual component. Read the <a href="/latest/component-guide.html">Component Guide</a> for more information.</p>
 <h1 id="navigation">Navigation</h1>
-<h2 id="component-navigation">component navigation</h2>
+<h3 id="component-navigation">component navigation</h3>
 <ul>
 <li><a href="/latest/api-reference.html#linkprops-children">link</a></li>
 </ul>
-<h2 id="programmatic-navigation-functions">programmatic navigation functions</h2>
+<h3 id="programmatic-navigation-functions">programmatic navigation functions</h3>
 <ul>
 <li><a href="/latest/api-reference.html#navigateroutename-options">navigate</a></li>
 <li><a href="/latest/api-reference.html#pushhistoryroutename-options">pushHistory</a></li>
