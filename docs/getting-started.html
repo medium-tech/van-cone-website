@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8" />
     <title>Van Cone | Getting Started</title>
-    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-    <img id="van-logo-right-side" src="/img/logo-615x892.png" alt="Van Cone Logo" />   
+    <img id="van-logo-right-side" src="./img/logo-615x892.png" alt="Van Cone Logo" />   
     <div id="sidebar">
         <a href="/"><h1>Van Cone</h1></a>
         <a id="van-logo-sidebar" href="/">
-            <img id="van-logo-sidebar-img" src="/img/logo-308x446.png" alt="Van Cone Logo" />
+            <img id="van-logo-sidebar-img" src="./img/logo-308x446.png" alt="Van Cone Logo" />
         </a>
         <ul>
-            <li><a href="/latest/getting-started.html">Getting Started</a></li>
-            <li><a href="/latest/component-guide.html">Component Guide</a></li>
-            <li><a href="/latest/api-reference.html">API Reference</a></li>
+            <li><a href="./getting-started.html">Getting Started</a></li>
+            <li><a href="./routing-and-nav-guide.html">Routing and Nav Guide</a></li>
+            <li><a href="./component-guide.html">Component Guide</a></li>
+            <li><a href="./api-reference.html">API Reference</a></li>
+            <li><a href="https://github.com/b-rad-c/van-cone" target="_blank">Source code</a></li>
+            <li><a href="https://www.npmjs.com/package/van-cone" target="_blank">npm package</a></li>
         </ul>
     </div>
     <div id="content">
@@ -24,7 +27,7 @@
 <pre><code class="hljs language-bash">npm install van-cone
 </code></pre><h1 id="overview">Overview</h1>
 <p>Van Cone is a minimal framework that provides routing, history and a link component that provides dynamic styling for when it is the active link. It is necessary to know the basics of <a href="https://vanjs.org">VanJS</a> to use Van Cone, once you know VanJS, Van Cone is simple.</p>
-<p>Van Cone has only one exported function <a href="/latest/api-reference.html#createconerouterelement-routes-defaultnavstate"><code>createCone</code></a> which is used to create an application object. You provide it with the DOM element that will contain the app, a list of routes, and an optional default state for <code>window.history.state</code> and it returns an object with several SPA helper functions.</p>
+<p>Van Cone has only one exported function <a href="./api-reference.html#createconerouterelement-routes-defaultnavstate"><code>createCone</code></a> which is used to create an application object. You provide it with the DOM element that will contain the app, a list of routes, and an optional default state for <code>window.history.state</code> and it returns an object with several SPA helper functions.</p>
 <h3 id="typescript">TypeScript</h3>
 <ul>
 <li>Supported! 🥳</li>
@@ -37,33 +40,30 @@
 </code></pre><p>Install VanJS and Van Cone</p>
 <pre><code>npm install vanjs-core van-cone --save
 </code></pre><p>Paste the following into a file called <code>index.js</code>, or whatever the value for <code>main</code> is in your <code>package.json</code> file.</p>
-<pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> createCone <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;van-cone&#x27;</span>;
-<span class="hljs-keyword">import</span> van <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vanjs-core&#x27;</span>;
-<span class="hljs-keyword">const</span> { div, p, span, hr } = van.<span class="hljs-property">tags</span>;
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> createCone <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;van-cone&#x27;</span>
+<span class="hljs-keyword">import</span> van <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vanjs-core&#x27;</span>
+<span class="hljs-keyword">const</span> { div, p, span, hr } = van.<span class="hljs-property">tags</span>
 
 <span class="hljs-comment">// define page components</span>
 <span class="hljs-keyword">const</span> <span class="hljs-title function_">homePage</span> = (<span class="hljs-params"></span>) =&gt; <span class="hljs-title function_">div</span>(<span class="hljs-string">&#x27;Home Page&#x27;</span>)
 <span class="hljs-keyword">const</span> <span class="hljs-title function_">userPage</span> = (<span class="hljs-params">params</span>) =&gt; <span class="hljs-title function_">div</span>(<span class="hljs-string">&#x27;User Page&#x27;</span>, <span class="hljs-title function_">p</span>(<span class="hljs-string">&#x27;userId: &#x27;</span> + params.<span class="hljs-property">userId</span>))
 
-<span class="hljs-comment">// define routes</span>
-<span class="hljs-keyword">const</span> routes = [
-  { <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/&#x27;</span>,              <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;home&#x27;</span>, <span class="hljs-attr">callable</span>: <span class="hljs-keyword">async</span> () =&gt; homePage },
-  { <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/user/:userId&#x27;</span>,  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-attr">callable</span>: <span class="hljs-keyword">async</span> () =&gt; userPage }
-];
-
 <span class="hljs-comment">// create the spa object</span>
 <span class="hljs-keyword">const</span> routerElement = <span class="hljs-title function_">div</span>({ <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;layout&#x27;</span> })
-<span class="hljs-keyword">const</span> { link } = <span class="hljs-title function_">createCone</span>(routerElement, routes)
+<span class="hljs-keyword">const</span> { link, route } = <span class="hljs-title function_">createCone</span>({<span class="hljs-attr">routerElement</span>: routerElement})
+
+<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;home&#x27;</span>, <span class="hljs-string">&#x27;/&#x27;</span>, homePage)
+<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-string">&#x27;/user/:userId&#x27;</span>, userPage)
 
 <span class="hljs-comment">// main app layout</span>
 <span class="hljs-keyword">const</span> <span class="hljs-title function_">App</span> = (<span class="hljs-params"></span>) =&gt;
   <span class="hljs-title function_">div</span>(
-    <span class="hljs-title function_">link</span>({ <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;home&#x27;</span> }, <span class="hljs-string">&#x27;Home&#x27;</span>),
+    <span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;home&#x27;</span>}, <span class="hljs-string">&#x27;Home&#x27;</span>),
     <span class="hljs-title function_">span</span>(<span class="hljs-string">&#x27; | &#x27;</span>),
     <span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-attr">params</span>: {<span class="hljs-attr">userId</span>: <span class="hljs-number">123</span>}}, <span class="hljs-string">&#x27;User&#x27;</span>),
     <span class="hljs-title function_">hr</span>(),
     routerElement
-  );
+  )
 
 <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">replaceChildren</span>(<span class="hljs-title class_">App</span>());
 </code></pre><p>Paste the following into a file called <code>index.html</code>. Make sure the script src tag is pointing at the JS file you just created.</p>
@@ -111,22 +111,9 @@
 </code></pre><p>Run the following to open a bundle visualizer showing what is taking up space in your build.</p>
 <pre><code>npm run bundle-visualizer
 </code></pre><h1 id="components">Components</h1>
-<p>In <a href="https://vanjs.org">VanJS</a> and Van Cone components are simply Javascript functions, there is no need for a specific object type as it adds unnecessary overhead to the frameworks. However, you&#39;ll note in the example above the <code>userPage</code> &quot;component&quot; is expecting a parameter <code>params</code> which is an object that includes a <code>userId</code> property parsed out of the url. The Van Cone router passes a specific set of arguments to the &quot;component&quot; providing SPA functionality without the overhead of an actual component. Read the <a href="/latest/component-guide.html">Component Guide</a> for more information.</p>
-<h1 id="navigation">Navigation</h1>
-<h3 id="component-navigation">component navigation</h3>
-<ul>
-<li><a href="/latest/api-reference.html#linkprops-children">link</a></li>
-</ul>
-<h3 id="programmatic-navigation-functions">programmatic navigation functions</h3>
-<ul>
-<li><a href="/latest/api-reference.html#navigateroutename-options">navigate</a></li>
-<li><a href="/latest/api-reference.html#pushhistoryroutename-options">pushHistory</a></li>
-</ul>
+<p>In <a href="https://vanjs.org">VanJS</a> and Van Cone components are simply Javascript functions, there is no need for a specific object type as it adds unnecessary overhead to the frameworks. However, you&#39;ll note in the example above the <code>userPage</code> &quot;component&quot; is expecting a parameter <code>params</code> which is an object that includes a <code>userId</code> property parsed out of the url. The Van Cone router passes a specific set of arguments to the &quot;component&quot; providing SPA functionality without the overhead of an actual component. Read the <a href="./component-guide.html">Component Guide</a> for more information.</p>
 <h1 id="what-next">What next?</h1>
-<ul>
-<li><a href="/latest/api-reference.html">API Documentation</a></li>
-<li><a href="/latest/component-guide.html">Component Guide</a></li>
-</ul>
+<p><a href="./routing-and-nav-guide.html">Routing and Navigation Guide</a></p>
 
     </div>
 </body>

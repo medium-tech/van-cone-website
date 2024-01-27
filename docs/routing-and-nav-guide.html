@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Van Cone | Routing and Nav Guide</title>
+    <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+    <img id="van-logo-right-side" src="./img/logo-615x892.png" alt="Van Cone Logo" />   
+    <div id="sidebar">
+        <a href="/"><h1>Van Cone</h1></a>
+        <a id="van-logo-sidebar" href="/">
+            <img id="van-logo-sidebar-img" src="./img/logo-308x446.png" alt="Van Cone Logo" />
+        </a>
+        <ul>
+            <li><a href="./getting-started.html">Getting Started</a></li>
+            <li><a href="./routing-and-nav-guide.html">Routing and Nav Guide</a></li>
+            <li><a href="./component-guide.html">Component Guide</a></li>
+            <li><a href="./api-reference.html">API Reference</a></li>
+            <li><a href="https://github.com/b-rad-c/van-cone" target="_blank">Source code</a></li>
+            <li><a href="https://www.npmjs.com/package/van-cone" target="_blank">npm package</a></li>
+        </ul>
+    </div>
+    <div id="content">
+        <h1 id="routing-and-navigation-guide">Routing and Navigation Guide</h1>
+<h1 id="routing">Routing</h1>
+<p>After creating your application using the <a href="./api-reference.html#createconerouterelement-routes-defaultnavstate"><code>createCone</code></a> function you have access to the <code>route</code> function which will let you define a route.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> layout = <span class="hljs-title function_">div</span>({ <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;layout&#x27;</span> })
+<span class="hljs-keyword">const</span> { route } = <span class="hljs-title function_">createCone</span>({<span class="hljs-attr">routerElement</span>: layout})
+
+<span class="hljs-keyword">const</span> homePage = <span class="hljs-title function_">div</span>(<span class="hljs-string">&#x27;Home Page&#x27;</span>)
+<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;home&#x27;</span>, <span class="hljs-string">&#x27;/&#x27;</span>, homePage)
+</code></pre><p>Above we map the element defined by <code>homePage</code> to the url <code>/</code> which a route name of <code>home</code>. We&#39;ll learn how to navigate to the url using the <a href="./api-reference.html#linkprops-children"><code>link</code></a> component shortly.</p>
+<h2 id="url-parameters">url parameters</h2>
+<p>We also have the ability to define url parameters with a colon:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">homePage</span> = (<span class="hljs-params"></span>) =&gt; <span class="hljs-title function_">div</span>(<span class="hljs-string">&#x27;Home Page&#x27;</span>)
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">userPage</span> = (<span class="hljs-params">params</span>) =&gt; <span class="hljs-title function_">div</span>(<span class="hljs-string">&#x27;User Page&#x27;</span>, <span class="hljs-title function_">p</span>(<span class="hljs-string">&#x27;userId: &#x27;</span> + params.<span class="hljs-property">userId</span>))
+
+<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;home&#x27;</span>, <span class="hljs-string">&#x27;/&#x27;</span>, homePage)
+<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-string">&#x27;/user/:userId&#x27;</span>, userPage)
+</code></pre><p>Above we have defined the home page component and the user page component. The user page component takes advantage of the the <code>userId</code> params defined in the route using a colon through the <code>params</code> object passed to the component function.</p>
+<h2 id="wild-card-not-found-route">wild card (not found) route</h2>
+<p>Use <code>.*</code> to create a wild card route.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;notFound&#x27;</span>, <span class="hljs-string">&#x27;.*&#x27;</span>, notFound, {<span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;VanJS Example | Not Found&#x27;</span>})
+</code></pre><h2 id="importing-components">Importing components</h2>
+<p>Components can also be imported asyncronously:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-comment">// using the default export</span>
+<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;page-a&#x27;</span>, <span class="hljs-string">&#x27;/page-a&#x27;</span>, <span class="hljs-keyword">async</span> () =&gt; (<span class="hljs-keyword">await</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">&#x27;./pages&#x27;</span>)))
+
+<span class="hljs-comment">// using a named export</span>
+<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;page-b&#x27;</span>, <span class="hljs-string">&#x27;/page-b&#x27;</span>, <span class="hljs-keyword">async</span> () =&gt; (<span class="hljs-keyword">await</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">&#x27;./pages&#x27;</span>)).<span class="hljs-property">pageB</span>)
+</code></pre><h2 id="advaned-routing">Advaned routing</h2>
+<pre><code class="hljs language-javascript"><span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;home&#x27;</span>, <span class="hljs-string">&#x27;/&#x27;</span>, homePage, {<span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;Van Cone | Home&#x27;</span>})
+<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-string">&#x27;/user/:userId&#x27;</span>, userPage, {<span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;Van Cone | Data&#x27;</span>, <span class="hljs-attr">backend</span>: <span class="hljs-string">&#x27;api/user/:userId&#x27;</span>})
+</code></pre><p>Above we use the options object to pass an optional <code>title</code> param which will become the title of the page when navigating to this route. We also defined a <code>backend</code> route, so that we can use <a href="./api-reference.html#backendurlroutename-params-query"><code>backendUrl</code></a> to generate a url with <code>userId</code> because we fetch out data from a different endpoint that our frontend url.</p>
+<p>Additionally, Van Cone will also provide query string parameters automatically. Components can be elements, strings, or functions, see the <a href="./component-guide.html">component guide</a> for details.</p>
+<h1 id="navigation">Navigation</h1>
+<h3 id="component-navigation">component navigation</h3>
+<p>The <a href="./api-reference.html#createconerouterelement-routes-defaultnavstate"><code>createCone</code></a> function also gives us the <a href="./api-reference.html#linkprops-children">link</a> component which returns an <code>a</code> element enabling us to navigate to our defined routes.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;home&#x27;</span>}, <span class="hljs-string">&#x27;Home&#x27;</span>),
+</code></pre><p>This returns an <code>a</code> element with the url defined by the route named <code>home</code>, the innerHTML of the element is <code>Home</code>.</p>
+<p>We can also provide URL params. If we have a route defined like this:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-string">&#x27;/user/:userId&#x27;</span>, userPage)
+</code></pre><p>We can fill in the <code>userId</code> param like this:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-attr">params</span>: {<span class="hljs-attr">userId</span>: <span class="hljs-number">123</span>}}, <span class="hljs-string">&#x27;User&#x27;</span>)
+</code></pre><p>Which will navigate us to this url: <code>/user/123</code></p>
+<p>The link components returns an <code>a</code> tag and usable inside typical VanJS code like this:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">App</span> = (<span class="hljs-params"></span>) =&gt;
+  <span class="hljs-title function_">div</span>(
+    <span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;home&#x27;</span>}, <span class="hljs-string">&#x27;Home&#x27;</span>),
+    <span class="hljs-title function_">span</span>(<span class="hljs-string">&#x27; | &#x27;</span>),
+    <span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-attr">params</span>: {<span class="hljs-attr">userId</span>: <span class="hljs-number">123</span>}}, <span class="hljs-string">&#x27;User&#x27;</span>),
+    <span class="hljs-title function_">hr</span>(),
+    routerElement
+  )
+</code></pre><p>The link component also enables us to set query parameters and pass arbitrary context data to the new route, for example a search page could have a list of users and each link could pass the pre-loaded data from the search to the user route to save the page from re-fetching data. </p>
+<p>Additionally the link component is aware of the active routing enabling dynamic styling when the route is active for use in navigation menus.</p>
+<p>See the <a href="./api-reference.html#linkprops-children">link documentation</a> for more information. </p>
+<h2 id="programmatic-navigation">Programmatic navigation</h2>
+<p>For programmitic navigation we can use the <a href="./api-reference.html#navigateroutename-options">navigate</a> function.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-title function_">navigate</span>(<span class="hljs-string">&#x27;user&#x27;</span>, { <span class="hljs-attr">itemId</span>: <span class="hljs-number">123</span> })
+<span class="hljs-comment">// &quot;http://localhost:8000/user/123&quot;</span>
+</code></pre><p>If you only want to update the history without changing the DOM state you can use <a href="./api-reference.html#pushhistoryroutename-options">pushHistory</a>.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-title function_">pushHistory</span>(<span class="hljs-string">&#x27;user&#x27;</span>, { <span class="hljs-attr">itemId</span>: <span class="hljs-number">123</span> })
+<span class="hljs-comment">// &quot;http://localhost:8000/user/123&quot;</span>
+</code></pre><h2 id="url-generation">URL generation</h2>
+<p>You can use the <a href="./api-reference.html#navurlroutename-params-query"><code>navURL</code></a> function if you only need to generate the string for a url:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-title function_">navURL</span>(<span class="hljs-string">&#x27;user&#x27;</span>, { <span class="hljs-attr">itemId</span>: <span class="hljs-number">123</span> })
+<span class="hljs-comment">// &quot;http://localhost:8000/user/123&quot;</span>
+</code></pre><p>Or, if you have defined a different backend url for a page you can get the url as a string with the <a href="./api-reference.html#backendurlroutename-params-query"><code>backendUrl</code></a> function.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-title function_">backendUrl</span>(<span class="hljs-string">&#x27;user&#x27;</span>, { <span class="hljs-attr">itemId</span>: <span class="hljs-number">123</span> })
+<span class="hljs-comment">// &quot;http://localhost:8000/api/user/123&quot;</span>
+</code></pre><h1 id="cone-app">Cone App</h1>
+<p>Remeber that these functions are available after creating the cone app with <a href="./api-reference.html#createconerouterelement-routes-defaultnavstate"><code>createCone</code></a>.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> createCone <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;van-cone&#x27;</span>
+
+<span class="hljs-comment">// ... other logic ...</span>
+
+<span class="hljs-comment">// create the spa object</span>
+<span class="hljs-keyword">const</span> { 
+    link, 
+    route, 
+    navigate, 
+    pushHistory, 
+    navURL, 
+    backendUrl 
+} = <span class="hljs-title function_">createCone</span>({<span class="hljs-attr">routerElement</span>: <span class="hljs-title function_">div</span>()})
+
+<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;home&#x27;</span>, <span class="hljs-string">&#x27;/&#x27;</span>, homePage)
+<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-string">&#x27;/user/:userId&#x27;</span>, userPage)
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">App</span> = (<span class="hljs-params"></span>) =&gt;
+  <span class="hljs-title function_">div</span>(
+    <span class="hljs-comment">// use link component</span>
+    <span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;home&#x27;</span>}, <span class="hljs-string">&#x27;Home&#x27;</span>),
+    <span class="hljs-title function_">span</span>(<span class="hljs-string">&#x27; | &#x27;</span>),
+    <span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-attr">params</span>: {<span class="hljs-attr">userId</span>: <span class="hljs-number">123</span>}}, <span class="hljs-string">&#x27;User&#x27;</span>),
+    <span class="hljs-title function_">hr</span>(),
+    routerElement
+  )
+
+<span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">replaceChildren</span>(<span class="hljs-title class_">App</span>());
+</code></pre><p>For complex applications you can export the cone object and import these functions in other modules.</p>
+<h1 id="what-next">What next?</h1>
+<p><a href="./component-guide.html">Component Guide</a></p>
+
+    </div>
+</body>
