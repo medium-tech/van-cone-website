@@ -99,6 +99,7 @@ const renderPage = (sourcePath, outputPath, pageTitle) => {
             <li><a href="./routing-and-nav-guide.html">Routing and Nav Guide</a></li>
             <li><a href="./component-guide.html">Component Guide</a></li>
             <li><a href="./api-reference.html">API Reference</a></li>
+            <li><a href="https://github.com/medium-tech/van-cone/tree/main/examples" target="_blank">Examples</a></li>
             <li><a href="https://github.com/b-rad-c/van-cone" target="_blank">Source code</a></li>
             <li><a href="https://www.npmjs.com/package/van-cone" target="_blank">npm package</a></li>
         </ul>
