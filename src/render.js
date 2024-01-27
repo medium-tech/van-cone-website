@@ -90,8 +90,8 @@ const renderPage = (sourcePath, outputPath, pageTitle) => {
 <body>
     <img id="van-logo-right-side" src="./img/logo-615x892.png" alt="Van Cone Logo" />   
     <div id="sidebar">
-        <a href="/"><h1>Van Cone</h1></a>
-        <a id="van-logo-sidebar" href="/">
+        <a href="./"><h1>Van Cone</h1></a>
+        <a id="van-logo-sidebar" href="./">
             <img id="van-logo-sidebar-img" src="./img/logo-308x446.png" alt="Van Cone Logo" />
         </a>
         <ul>
