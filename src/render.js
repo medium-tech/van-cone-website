@@ -94,6 +94,8 @@ const renderPage = (sourcePath, outputPath, pageTitle) => {
         <a id="van-logo-sidebar" href="./">
             <img id="van-logo-sidebar-img" src="./img/logo-308x446.png" alt="Van Cone Logo" />
         </a>
+        <p id="version">version ${vanConePackage.version}</p>
+        <hr />
         <ul>
             <li><a href="./getting-started.html">Getting Started</a></li>
             <li><a href="./routing-and-nav-guide.html">Routing and Nav Guide</a></li>

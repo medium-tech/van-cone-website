@@ -67,6 +67,12 @@ a:hover {
   text-decoration: none;
 }
 
+hr {
+  width: 35%;
+  margin: 0 auto;
+  color: white;
+}
+
 /*
 layout
 */
@@ -182,7 +188,7 @@ mobile
     max-width: 100%;
   }
 
-  #sidebar ul {
+  #sidebar ul, #version, #sidebar hr {
     display: none;
   }
 

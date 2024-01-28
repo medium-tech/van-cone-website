@@ -12,6 +12,8 @@
         <a id="van-logo-sidebar" href="./">
             <img id="van-logo-sidebar-img" src="./img/logo-308x446.png" alt="Van Cone Logo" />
         </a>
+        <p id="version">version 0.0.6</p>
+        <hr />
         <ul>
             <li><a href="./getting-started.html">Getting Started</a></li>
             <li><a href="./routing-and-nav-guide.html">Routing and Nav Guide</a></li>
@@ -139,8 +141,8 @@
 <h2 id="pushhistoryroutename-options">pushHistory(routeName, options)</h2>
 <p>A wrapper around <a href="#navigateroutename-options"><code>navigate</code></a> that will only push a new browser state to the history stack and will not change the DOM.</p>
 <h2 id="iscurrentpagepagename">isCurrentPage(pageName)</h2>
-<p>Returns a <code>van.derive</code> object with a boolean that is true when <code>pageName</code> is the active route</p>
-<pre><code class="hljs language-javascript"><span class="hljs-keyword">if</span> (<span class="hljs-title function_">isCurrentPage</span>(<span class="hljs-string">&quot;home&quot;</span>).<span class="hljs-property">val</span>) <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;we&#x27;re home!&quot;</span>)
+<p>Return a boolean that is <code>true</code> when <code>pageName</code> is the active route</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">if</span> (<span class="hljs-title function_">isCurrentPage</span>(<span class="hljs-string">&quot;home&quot;</span>)) <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;we&#x27;re home!&quot;</span>)
 </code></pre><h2 id="linkprops-children">link(props, ...children)</h2>
 <p>A light wrapper around <code>van.tags.a</code> that adds dynamic url generation for <code>routeName</code>, with url and query params to be used when generating the url with <a href="#navurlroutename-params-query"><code>navUrl</code></a>. It also adds dynamic styling when <code>routeName</code> is the active route. Additional context can be provided to the component resolved by the router. For example, <code>link</code> could be used on a search results page to navigate to each item&#39;s page and could pass the item&#39;s data enabling item page to use preloaded data instead of fetching it.</p>
 <h3 id="arguments">arguments</h3>
