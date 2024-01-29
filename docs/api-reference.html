@@ -12,7 +12,7 @@
         <a id="van-logo-sidebar" href="./">
             <img id="van-logo-sidebar-img" src="./img/logo-308x446.png" alt="Van Cone Logo" />
         </a>
-        <p id="version">version 0.0.6</p>
+        <p id="version">version 0.0.7</p>
         <hr />
         <ul>
             <li><a href="./getting-started.html">Getting Started</a></li>
@@ -26,21 +26,36 @@
     </div>
     <div id="content">
         <h1 id="api-reference">API Reference</h1>
-<h3 id="createconerouterelement-routes-defaultnavstate">createCone(routerElement, routes, defaultNavState)</h3>
+<p>The Van Cone library only has one exported item which the <code>createCone</code> function used to create a Van Cone SPA app. The first section of the API documentation describes this function and the second describes the functions and properties returned by it.</p>
+<h1 id="creating-a-van-cone-app">Creating a Van Cone app</h1>
+<hr />
+<h2 id="createconeconeconfig">createCone(coneConfig)</h2>
 <p>The only exported function from the module, used to create an application.</p>
 <p><strong>arguments</strong></p>
 <ul>
+<li><a href="#coneconfig">coneConfig</a> - used to configure the cone app</li>
+</ul>
+<p><strong>return</strong></p>
+<ul>
+<li><a href="#coneapp">coneApp</a> - an object containing methods and properties useful for creating an SPA.</li>
+</ul>
+<h3 id="coneconfig">coneConfig</h3>
+<ul>
 <li><p>routerElement - (required) the root DOM element element that holds the app (element defined by active route)</p>
-</li>
-<li><p>routes - (required) an array of <a href="#routes"><code>routes</code></a></p>
 </li>
 <li><p>defaultNavState - (optional) the default navigation state, any type allowed by <a href="https://developer.mozilla.org/en-US/docs/Web/API/History/pushState"><code>history.pushState</code></a></p>
 </li>
 <li><p><a href="#routerconfig">routerConfig</a> = (optional) - configure <code>prefix</code> to prepend to each url, or <code>backendPrefix</code> if different than frontend.</p>
 </li>
 </ul>
-<p><strong>return</strong></p>
-<p>An object with the following items is returned:</p>
+<h3 id="routerconfig">routerConfig</h3>
+<p>An object used to configure the router, it has two optional keys <code>prefix</code> and <code>backendPrefix</code>. If <code>routerConfig</code> is not provided or either key is not provided they will default to an empty string. </p>
+<p><code>prefix</code> - (optional) a string to be prepended to front end URLs. See <a href="#navurlroutename-params-query"><code>navUrl</code></a> for more. If not provided will default to an empty string.</p>
+<p><code>backendPrefix</code> - (optional) useful for when the backend is at a different host or has a different prefix than the front end. It is only used as a utility to generate URLs for fetching data, it is ignored for route matching and page navigation. See <a href="#backendurlroutename-params-query"><code>backendUrl</code></a> for more.</p>
+<h1 id="using-the-van-cone-app">Using the Van Cone app</h1>
+<hr />
+<h2 id="coneapp">coneApp</h2>
+<p>The <code>coneApp</code> object is returned from the <a href="#createconeconeconfig">createCone</a> function and contains the following properties and methods to build your SPA app.</p>
 <ul>
 <li><p><a href="#linkprops-children">link</a> - a VanJS link component that navigates to named routes and includes active link css styling</p>
 </li>
@@ -63,38 +78,7 @@
 <li><p>setNavState - change <a href="https://developer.mozilla.org/en-US/docs/Web/API/History/state"><code>window.history.state</code></a>, any type allowed by <a href="https://developer.mozilla.org/en-US/docs/Web/API/History/pushState"><code>history.pushState</code></a></p>
 </li>
 </ul>
-<h2 id="routes">routes</h2>
-<p>A list of objects defining each route. Each route object has the following properties:</p>
-<p><strong>path</strong> (required) a string defining the route&#39;s path. To create a URL param prefix it with a colon, use .* for wild cards (404 not found)</p>
-<p><strong>name</strong> (required) a string representing the name of the route, used for programmatic navigation</p>
-<p><strong>callable</strong> (required) a callback that either returns an element to put on the DOM or another callable that returns this element (for more complex apps requiring imports). The callback is passed 2 arguments, an object representing the params parsed from the URL and another representing parsed query string params.</p>
-<p><strong>backend</strong> (optional) provide this value when data is fetched from a different endpoint on the backend than on the frontend. See <a href="#backendurlroutename-params-query"><code>backendUrl</code></a> for more.</p>
-<p><strong>title</strong> (optional) if provided the title of the page will change to this when this route is active.</p>
-<h3 id="example">example</h3>
-<p>Below is a basic example showing routes with url and query params and how to consume them in a component.</p>
-<p>See the <a href="./component-guide.html">component guide</a> for more examples.</p>
-<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">userPage</span> = (<span class="hljs-params">params</span>) =&gt; <span class="hljs-title function_">div</span>(<span class="hljs-string">&#x27;User Page&#x27;</span>, <span class="hljs-title function_">p</span>(<span class="hljs-string">&#x27;userId: &#x27;</span> + params.<span class="hljs-property">userId</span>))
-<span class="hljs-keyword">const</span> <span class="hljs-title function_">userListPage</span> = (<span class="hljs-params">params, query</span>) =&gt; <span class="hljs-title function_">div</span>(<span class="hljs-string">&#x27;User List&#x27;</span>, <span class="hljs-title function_">p</span>(<span class="hljs-string">&#x27;sort by: &#x27;</span> + query.<span class="hljs-property">sort</span>))
-
-<span class="hljs-keyword">const</span> routes = [
-    {
-        <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/user/:userId&quot;</span>,
-        <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;user&quot;</span>,
-        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;VanJS Example | User&quot;</span>,
-        <span class="hljs-attr">callable</span>: <span class="hljs-keyword">async</span> () =&gt; <span class="hljs-keyword">import</span>(<span class="hljs-string">&#x27;./app/pages/user&#x27;</span>)
-    },
-    {
-        <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/users&quot;</span>,
-        <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;users&quot;</span>,
-        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;VanJS Example | User List&quot;</span>,
-        <span class="hljs-attr">callable</span>: <span class="hljs-keyword">async</span> () =&gt; <span class="hljs-keyword">import</span>(<span class="hljs-string">&#x27;./app/pages/userList&#x27;</span>)
-    }
-]
-</code></pre><h2 id="routerconfig">routerConfig</h2>
-<p>An object used to configure the router, it has two optional keys <code>prefix</code> and <code>backendPrefix</code>. If <code>routerConfig</code> is not provided or either key is not provided they will default to an empty string. </p>
-<p><code>prefix</code> will be prepended to front end URLs, the ones shown in the browser and matched when navigating to different pages. See <a href="#navurlroutename-params-query"><code>navUrl</code></a> for more.</p>
-<p>The <code>backendPrefix</code> is useful for when the backend is at a different host or has a different prefix than the front end. It is only used as a utility to generate URLs for fetching data, it is ignored for route matching and page navigation. See <a href="#backendurlroutename-params-query"><code>backendUrl</code></a> for more.</p>
-<h2 id="navurlroutename-params-query">navUrl(routeName, params, query)</h2>
+<h3 id="navurlroutename-params-query">navUrl(routeName, params, query)</h3>
 <p>Return a string representing a url for the route with name <code>routeName</code>, and optionally form url params with the <code>params</code> argument or query params with the <code>query</code> argument. If <code>prefix</code> was included with <a href="#routerconfig"><code>routerConfig</code></a> it will be prepended to the url. This function is used internally by programmatic navigation in <a href="#linkprops-children"><code>link</code></a>, <a href="#navigateroutename-options"><code>navigate</code></a> and <a href="#pushhistoryroutename-options"><code>pushHistory</code></a> and is generally not needed, but it exposed publically in case there is a need for the string. Note that the string is also returned by the programmatic functions.</p>
 <p><strong>Note: to access this function from the return value of <a href="#createconerouterelement-routes-defaultnavstate"><code>createCone</code></a> call <code>navUrl</code></strong></p>
 <p>The following <a href="#routes"><code>route</code></a>:</p>
@@ -107,7 +91,7 @@
 </code></pre><p>will result in the following:</p>
 <pre><code class="hljs language-javascript"><span class="hljs-title function_">navUrl</span>(<span class="hljs-string">&#x27;user&#x27;</span>, { <span class="hljs-attr">userId</span>: <span class="hljs-number">123</span> }, { <span class="hljs-attr">activeTab</span>: <span class="hljs-string">&#x27;profile&#x27;</span>})
 <span class="hljs-comment">// &quot;/user/123?activeTab=profile&quot;</span>
-</code></pre><h2 id="backendurlroutename-params-query">backendUrl(routeName, params, query)</h2>
+</code></pre><h3 id="backendurlroutename-params-query">backendUrl(routeName, params, query)</h3>
 <p>Return a string backend url for the route with name <code>routeName</code>, and optionally form url params with the <code>params</code> argument or query params with the <code>query</code> argument. The return can be used for fetching data. If <code>backendPrefix</code> was included with <a href="#routerconfig"><code>routerConfig</code></a> it will be prepended to the url.</p>
 <p>The following <a href="#routerconfig"><code>routerConfig</code></a> and <a href="#routes"><code>routes</code></a>:</p>
 <pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> routerConfig = { <span class="hljs-attr">backendPrefix</span>: <span class="hljs-string">&#x27;http://localhost:8000&#x27;</span> }
@@ -127,7 +111,7 @@
 
 <span class="hljs-title function_">navUrl</span>(<span class="hljs-string">&#x27;user&#x27;</span>, { <span class="hljs-attr">itemId</span>: <span class="hljs-number">123</span> })
 <span class="hljs-comment">// &quot;http://localhost:8000/user/123&quot;</span>
-</code></pre><h2 id="navigateroutename-options">navigate(routeName, options)</h2>
+</code></pre><h3 id="navigateroutename-options">navigate(routeName, options)</h3>
 <p>Programmatically navigate to <code>routeName</code> using url generated by <a href="#navurlroutename-params-query"><code>navUrl</code></a>, returns url as a string.</p>
 <p><code>routeName</code> - (required) a string representing the name of the route</p>
 <p><code>options</code> - (optional) an object with the following optional options</p>
@@ -138,14 +122,14 @@
 <li><code>context</code> - if provided it will be pased to the resolved component for <code>routeName</code>. See <a href="./component-guide.html#full-component-example"><code>example</code></a> for details.</li>
 <li><code>dispatch</code> - if true (the default) DOM will be updated with component configured for the route. Pass false if only browser history needs to be updated. Note that if you only want to update history you should use the <a href="#pushhistoryroutename-options"><code>pushHistory</code></a> function instead.</li>
 </ul>
-<h2 id="pushhistoryroutename-options">pushHistory(routeName, options)</h2>
+<h3 id="pushhistoryroutename-options">pushHistory(routeName, options)</h3>
 <p>A wrapper around <a href="#navigateroutename-options"><code>navigate</code></a> that will only push a new browser state to the history stack and will not change the DOM.</p>
-<h2 id="iscurrentpagepagename">isCurrentPage(pageName)</h2>
+<h3 id="iscurrentpagepagename">isCurrentPage(pageName)</h3>
 <p>Return a boolean that is <code>true</code> when <code>pageName</code> is the active route</p>
 <pre><code class="hljs language-javascript"><span class="hljs-keyword">if</span> (<span class="hljs-title function_">isCurrentPage</span>(<span class="hljs-string">&quot;home&quot;</span>)) <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;we&#x27;re home!&quot;</span>)
-</code></pre><h2 id="linkprops-children">link(props, ...children)</h2>
+</code></pre><h3 id="linkprops-children">link(props, ...children)</h3>
 <p>A light wrapper around <code>van.tags.a</code> that adds dynamic url generation for <code>routeName</code>, with url and query params to be used when generating the url with <a href="#navurlroutename-params-query"><code>navUrl</code></a>. It also adds dynamic styling when <code>routeName</code> is the active route. Additional context can be provided to the component resolved by the router. For example, <code>link</code> could be used on a search results page to navigate to each item&#39;s page and could pass the item&#39;s data enabling item page to use preloaded data instead of fetching it.</p>
-<h3 id="arguments">arguments</h3>
+<h4 id="arguments">arguments</h4>
 <pre><code class="hljs language-javascript"><span class="hljs-title function_">link</span>(props, ...children)
 </code></pre><p>The argument signature is the same as <code>van.tags.a</code> but additional properties are available to the <code>props</code> argument which configure how the link component works.</p>
 <p><code>props</code> - an object that will be passed to the resulting <code>van.tags.a</code> function, unchanged with the following exceptions:</p>
@@ -169,7 +153,7 @@
 <li><code>props.onClick</code> is set to an internal navigation function</li>
 </ul>
 <p><code>children</code> - is passed unchanged to the resulting <code>van.tags.a</code> function.</p>
-<h3 id="examples">examples</h3>
+<h4 id="examples">examples</h4>
 <p>A basic call to the route named <code>home</code> with the inner text for the a tag <code>Home</code>. This is the bare minimum required for <code>link</code>.</p>
 <pre><code class="hljs language-javascript"><span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;home&#x27;</span>}, <span class="hljs-string">&#x27;Home&#x27;</span>)
 </code></pre><p>A call to the route named <code>user</code> with the url param <code>userId</code> set to <code>123</code>, the inner text for the a tag is <code>User</code>.</p>
@@ -178,7 +162,7 @@
 <pre><code class="hljs language-javascript"><span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;users&#x27;</span>, <span class="hljs-attr">query</span>: {<span class="hljs-attr">sort</span>: <span class="hljs-string">&#x27;asc&#x27;</span>}}, <span class="hljs-string">&#x27;ascending&#x27;</span>)
 </code></pre><p>Pass additional context which can be any data type to the component resolved by the route. See <a href="./component-guide.html#full-component-example">example</a> for how to access context from within the component.</p>
 <pre><code class="hljs language-javascript"><span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;users&#x27;</span>, <span class="hljs-attr">context</span>: {<span class="hljs-attr">value</span>: <span class="hljs-string">&#x27;hello world&#x27;</span>}}, <span class="hljs-string">&#x27;User&#x27;</span>)
-</code></pre><h3 id="styling">styling</h3>
+</code></pre><h4 id="styling">styling</h4>
 <p>By default the class name for the a tag will be <code>router-link</code> but you can override it with the <code>class</code> property:</p>
 <pre><code class="hljs language-javascript"><span class="hljs-title function_">link</span>({<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;home&#x27;</span>, <span class="hljs-attr">class</span>: <span class="hljs-string">&#x27;navbar-link&#x27;</span>}, <span class="hljs-string">&quot;Home&quot;</span>)
 </code></pre><p>When the route for a <code>link</code> is active, the a tag&#39;s <code>aria-current</code> property will be set to <code>page</code>, which means you can set a custom style in your CSS like this:</p>
@@ -191,7 +175,7 @@
 <span class="hljs-selector-class">.navbar-link</span><span class="hljs-selector-attr">[aria-current=<span class="hljs-string">&quot;page&quot;</span>]</span> {
   <span class="hljs-attribute">color</span>: black;
 }
-</code></pre><h3 id="a-tag-only">a tag only</h3>
+</code></pre><h4 id="a-tag-only">a tag only</h4>
 <p>Currently <code>link</code> only supports returning an <code>a</code> tag, but by using <a href="#navigateroutename-options"><code>navigate</code></a> you could make any element a router link, and then use <a href="#iscurrentpagepagename"><code>isCurrentPage</code></a> to dynamically change properties such as class or styling when the route is active.</p>
 
     </div>

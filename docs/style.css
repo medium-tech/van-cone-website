@@ -68,9 +68,11 @@ a:hover {
 }
 
 hr {
-  width: 35%;
+  width: 100%;
   margin: 0 auto;
-  color: white;
+  border-style: solid;
+  border-width: 2px;
+  color: var(--purple);
 }
 
 /*
@@ -107,6 +109,13 @@ layout
   /* padding: 1em; */
   background-color: var(--purple);
   /* border-right: 1em solid var(--accent-2-med); */
+}
+
+#sidebar hr {
+  width: 35%;
+  margin: 0 auto;
+  color: white;
+  border-width: 1px;
 }
 
 #van-logo-sidebar {
