@@ -1,6 +1,6 @@
 # Van Cone Website
 
-Source code for build and deploying the van cone website.
+Source code for building, deploying and serving the van cone website.
 
 See the website live at: [medium-tech.github.io/van-cone-website](https://medium-tech.github.io/van-cone-website/)
 
